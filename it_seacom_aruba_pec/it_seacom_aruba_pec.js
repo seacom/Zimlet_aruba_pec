@@ -178,7 +178,45 @@ pec.prototype._setMenuBtnPec = function(btnPec, controller) {
 	};
 	var setPecCredential = BtnPecMenuTlb.createMenuItem(Dwt.getNextId(), setPecCredentialParams);
 	setPecCredential.addSelectionListener(new AjxListener(this, this._setCredentialsListener, [controller]));
+	var aboutParams = {
+		text: this.getMessage("about"), 
+		image: "seacom-panelIcon", 
+		style: DwtMenuItem.CASCADE_STYLE
+	};
+	var about = BtnPecMenuTlb.createMenuItem(Dwt.getNextId(), aboutParams);
+	about.addSelectionListener(new AjxListener(this, this._createAboutPage));
 };
+
+pec.prototype._createAboutPage = function(){
+	var view = new DwtComposite(this.getShell()); 
+	view.setSize("350", "230");
+	var html = new Array();
+	html.push(
+		"<div class='center-holder'>",
+			"<div class='center'>",
+				"<p class='big'>Zimlet Aruba PEC 1.0</p>",
+				"<p>powered by Seacom Srl</p>",
+			"</div>",
+		"</div>",
+		"<div class='med center-holder'>",
+			"<div class='center' id='zpm_logo'>",
+			"</div>",
+		"</div>",
+		"<div class='med center-holder'>",
+			"<p>Copyright 2014 Seacom Srl<br /><a href='http://www.seacom.it'>http://www.seacom.it</a></p>",
+		"</div>"
+	);
+	view.getHtmlElement().innerHTML = html.join("");
+	var dialog = new ZmDialog({
+		title : this.getMessage("about_poweredByTitle"), 
+		view : view, 
+		parent : this.getShell(), 
+		standardButtons : [DwtDialog.OK_BUTTON]
+	});
+	dialog.getButton(DwtDialog.OK_BUTTON).setImage("TasksApp");
+	dialog.setButtonListener(DwtDialog.OK_BUTTON, new AjxListener(this, function() {dialog.popdown();}));
+	dialog.popup(); 
+}
 
 /** Retrieve the contact obj selected
  *
