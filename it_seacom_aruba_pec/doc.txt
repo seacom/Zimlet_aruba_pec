@@ -1,0 +1,72 @@
+Dettagli sul SSO disponibile sulla webmail pec.
+
+La funzione prevede un token di autenticazione, è customizzata per-user ed ha la necessità di essere espressamente attivata, è attualmente disponibile per i test sull'interfaccia https://webmailtest.pec.it,
+
+La struttura dell'url da invocare per l'autenticazione è del tipo:
+
+url: <host>/authsc/sso.php?cust=<customer_id>&tok=<token>
+
+dove:
+
+host = https://webmailtest.pec.it
+customer_id = CUST001
+token = token di autenticazione
+
+Il token di autenticazione è costituito da una querystring cifrata, la struttura della querystring è:
+
+querystring: login=<casella_pec>&pwd=<pass_auth>&ts=<timestamp>
+
+dove:
+
+casella_pec = casella pec da autenticare
+password = password della casella pec
+timestamp = epoc dell'istante della creazione del token
+
+un esempio di querystring è:
+
+querystring: login=test_sso1@postacert.pre.demoaruba.com&pwd=test1234&ts=1404297252
+
+La cifratura è del tipo simmetrico TripleDES, in allegato troverai il codice php per effettuarla (la passphrase di test è wPVGq7shE25ftAbVLTDE).
+
+Il token da inviare alla webmail deve essere base64 encoded e poi url encoded, ad esempio in php:
+
+$token = urlencode(base64_encode(cifra($url, $passphrase)));
+
+Un esempio di url da invocare è:
+
+https://webmailtest.pec.it/authsc/sso.php?cust=CUST001&tok=NTZTZ2FMV2ZFZWFVM2RDNGRCNUpHMlFWR1VneDBhNTB3T...
+
+La durata del token è di 4 ore.
+
+La funzione di cifratura (php) è:
+
+/**
+* Cifra con una chiave simmetrica e algoritmo TripleDES (DESede) con
+* blocking mode ECB e padding PKCS5 (DESede/ECB/PKCS5Padding) la stringa
+* passata come parametro. Il risultato lo codifica in base64
+*
+* @param string $stringa
+* @return string stringa cifrata
+*
+*/
+function cifra($stringa, $passphrase){
+$size = mcrypt_get_block_size(MCRYPT_TRIPLEDES, 'ecb');
+$stringa = $this->pkcs5_pad($stringa, $size);
+$td = mcrypt_module_open(MCRYPT_TRIPLEDES, '', 'ecb', '');
+$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+mcrypt_generic_init($td, $passphrase, $iv);
+$encoded = mcrypt_generic($td, $stringa);
+mcrypt_generic_deinit($td);
+mcrypt_module_close($td);
+$encoded = base64_encode($encoded);
+
+return $encoded;
+}
+
+/**
+* metodo privato per il padding pkcs5 di una stringa
+*/
+function pkcs5_pad($text, $blocksize){
+$pad = $blocksize - (strlen($text) % $blocksize);
+return $text . str_repeat(chr($pad), $pad);
+}

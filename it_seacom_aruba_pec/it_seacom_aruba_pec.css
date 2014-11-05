@@ -1,0 +1,30 @@
+.Imgpec-panelIcon {
+  background: url("img/pec.gif") no-repeat 0 0;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.Imgseacom-panelIcon {
+  background: url("img/seacomSmall.png") no-repeat 0 0;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.Imgatsign {
+  background: url("img/at-sign.png") no-repeat 0 0;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+
+#zpm_logo {
+	background: url("img/seacomBig.png") no-repeat 0 0;
+	margin: auto;
+	height: 100px;
+	width: 100px;
+	overflow: hidden;
+}
+
+

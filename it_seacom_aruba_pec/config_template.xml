@@ -1,0 +1,7 @@
+<zimletConfig name="it_seacom_aruba_pec" version="0.1">
+  <global>	
+	<property name="it_seacom_aruba_pec_host">https://webmail.pec.it</property>
+	<property name="it_seacom_aruba_pec_customer_id">CUST001</property>
+	<property name="it_seacom_aruba_pec_passphrase">insert here a correct passphrase</property>
+  </global>
+</zimletConfig>
