@@ -5,7 +5,7 @@ From Zimlet it_seacom_aruba_pec, you can set the PEC credentials (login & passwo
 
 Requirements
 =====================
-The zimlet Emailtemplates is available for Zimbra 8.x.x
+The zimlet Aruba PEC is available for Zimbra 8.x.x
 
 Installation
 =====================
